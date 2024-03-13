@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "620572428536",
+    "project_id": "elearning-app-a6fb4",
+    "storage_bucket": "elearning-app-a6fb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620572428536:android:c1b0eda11fa7416357530d",
+        "android_client_info": {
+          "package_name": "ptit.trungng.e_learning_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYpymjskXFvfEz8SrxJLjmMo7baV9CQKw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
