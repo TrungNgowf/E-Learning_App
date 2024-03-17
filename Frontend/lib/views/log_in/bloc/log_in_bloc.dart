@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:e_learning_app/views/log_in/bloc/log_in_event.dart';
 import 'package:e_learning_app/views/log_in/bloc/log_in_state.dart';
@@ -9,10 +11,11 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
   }
 
   void emailEvent(EmailEvent event, Emitter<LogInState> emit) {
-    emit(state.copyWith(email: state.email));
+    log('EmailEvent: ${event.email}');
+    emit(state.copyWith(email: event.email));
   }
 
   void passwordEvent(PasswordEvent event, Emitter<LogInState> emit) {
-    emit(state.copyWith(password: state.password));
+    emit(state.copyWith(password: event.password));
   }
 }

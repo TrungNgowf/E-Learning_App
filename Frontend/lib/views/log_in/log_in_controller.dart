@@ -1,3 +1,4 @@
+import 'package:e_learning_app/common/custom_toast.dart';
 import 'package:e_learning_app/common/export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,12 +22,18 @@ class LogInController {
             email: email,
             password: password,
           );
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-            ),
-          );
+          if (credential.user == null) {
+            CustomToast.error(
+                'Error', 'User not found. Check your credentials');
+          } else if (!credential.user!.emailVerified) {
+            CustomToast.warning(
+                'Error', 'Please verify your email before logging in');
+          } else {
+            // Get.off(() => const HomeScreen());
+            CustomToast.success('Success', 'Logged in successfully');
+          }
+        } on FirebaseAuthException catch (e) {
+          throw Exception(e.message);
         }
       }
     } catch (e) {

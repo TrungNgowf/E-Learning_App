@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Color? backGroundColor;
   final Border? border;
   final Color? textColor;
+  final List<BoxShadow>? boxShadow;
   final void Function()? onTap;
 
   const CustomButton(
@@ -21,7 +22,8 @@ class CustomButton extends StatelessWidget {
       this.border,
       this.onTap,
       this.fontSize,
-      this.textColor});
+      this.textColor,
+      this.boxShadow});
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +38,16 @@ class CustomButton extends StatelessWidget {
             decoration: BoxDecoration(
                 color: backGroundColor ?? Colors.white,
                 border: border,
-                borderRadius: BorderRadius.circular(5)),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: boxShadow),
             child: Center(
               child: child ??
                   ReusableText(
                     text ?? "",
                     style: appStyle(
                         color: textColor ?? Colors.black,
-                        size: fontSize ?? 13,
-                        fw: FontWeight.w500),
+                        size: fontSize ?? 15,
+                        fw: FontWeight.w600),
                   ),
             ),
           ),

@@ -4,7 +4,7 @@ import 'package:e_learning_app/generated/assets.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../log_in/log_in.dart';
+import '../log_in/log_in_view.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
