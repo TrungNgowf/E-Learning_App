@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'export.dart';
+import '../utils/export.dart';
 
 class CustomToast {
   static void info(String title, String message, {int duration = 2}) {

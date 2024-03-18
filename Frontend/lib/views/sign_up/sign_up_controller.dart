@@ -1,6 +1,5 @@
 import 'package:e_learning_app/common/custom_toast.dart';
-import 'package:e_learning_app/common/export.dart';
-import 'package:e_learning_app/views/log_in/log_in_view.dart';
+import 'package:e_learning_app/utils/export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,7 @@ class SignUpController {
                 duration: 5);
             await credential.user!.sendEmailVerification();
             await credential.user!.updateDisplayName(username);
-            Get.off(() => const LoginScreen());
+            Get.offNamed(Routes.LOGIN);
           }
         } on FirebaseException catch (e) {
           CustomToast.error("Error", e.message!);

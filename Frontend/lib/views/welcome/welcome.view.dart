@@ -1,10 +1,9 @@
 import 'package:e_learning_app/common/custom_button.dart';
-import 'package:e_learning_app/common/export.dart';
 import 'package:e_learning_app/generated/assets.dart';
+import 'package:e_learning_app/main.dart';
+import 'package:e_learning_app/utils/export.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../log_in/log_in_view.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -101,7 +100,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             textColor: Colors.white,
             onTap: () {
               if (isLastPage == true) {
-                Get.offAll(() => const LoginScreen());
+                Get.offAllNamed(Routes.LOGIN);
+                Global.storageService
+                    .setBool(AppStorageService.HAVE_OPENED_BEFORE, true);
               } else {
                 pageController.nextPage(
                     duration: const Duration(milliseconds: 500),

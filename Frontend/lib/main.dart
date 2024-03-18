@@ -1,17 +1,14 @@
-import 'package:e_learning_app/common/export.dart';
 import 'package:e_learning_app/firebase_options.dart';
-import 'package:e_learning_app/views/welcome/welcome.view.dart';
+import 'package:e_learning_app/utils/export.dart';
+import 'package:e_learning_app/utils/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import 'utils/bloc_providers.dart';
+import 'utils/page_config.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Global.init();
   runApp(const MyApp());
 }
 
@@ -22,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: BlocProviders.allBlocProviders,
+      providers: [...AppPages.allBlocProviders(context)],
       child: ScreenUtilInit(
           designSize: const Size(360, 690),
           builder: (context, child) => GetMaterialApp(
@@ -33,8 +30,21 @@ class MyApp extends StatelessWidget {
                   primarySwatch: Colors.blue,
                   fontFamily: GoogleFonts.lexend().fontFamily,
                 ),
-                home: const WelcomeScreen(),
+                initialRoute: Routes.INITIAL,
+                onGenerateRoute: AppPages.onGenerateRoute,
               )),
     );
+  }
+}
+
+class Global {
+  static late StorageService storageService;
+
+  static Future<void> init() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    storageService = await StorageService().init();
   }
 }

@@ -3,23 +3,22 @@ import 'package:e_learning_app/common/custom_textfield.dart';
 import 'package:e_learning_app/generated/assets.dart';
 import 'package:e_learning_app/views/log_in/bloc/log_in_event.dart';
 import 'package:e_learning_app/views/log_in/log_in_controller.dart';
-import 'package:e_learning_app/views/sign_up/sign_up_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
-import '../../common/export.dart';
+import '../../utils/export.dart';
 import 'bloc/log_in_bloc.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LogInPage extends StatefulWidget {
+  const LogInPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LogInPage> createState() => _LogInPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LogInPageState extends State<LogInPage> {
   final GlobalKey<FormBuilderState> _loginKey = GlobalKey<FormBuilderState>();
   bool hidePwd = true;
 
@@ -196,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                           border: Border.all(color: AppColors.mainBlue),
                           onTap: () {
-                            Get.to(() => const SignUpScreen());
+                            Get.toNamed(Routes.SIGNUP);
                           }),
                       Gap(4.shp),
                       Row(

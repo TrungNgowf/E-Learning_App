@@ -1,4 +1,4 @@
-import 'package:e_learning_app/common/export.dart';
+import 'package:e_learning_app/utils/export.dart';
 import 'package:get/get.dart';
 
 AppBar customAppbar(

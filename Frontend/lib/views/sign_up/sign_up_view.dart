@@ -1,8 +1,7 @@
 import 'package:e_learning_app/common/custom_button.dart';
 import 'package:e_learning_app/common/custom_textfield.dart';
-import 'package:e_learning_app/common/export.dart';
 import 'package:e_learning_app/generated/assets.dart';
-import 'package:e_learning_app/views/log_in/log_in_view.dart';
+import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/sign_up/bloc/sign_up_bloc.dart';
 import 'package:e_learning_app/views/sign_up/sign_up_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,15 +9,15 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  GlobalKey<FormBuilderState> _signupKey = GlobalKey<FormBuilderState>();
+class _SignUpPageState extends State<SignUpPage> {
+  final GlobalKey<FormBuilderState> _signupKey = GlobalKey<FormBuilderState>();
   bool hidePwd = true;
   bool hideRePwd = true;
 
@@ -260,7 +259,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ],
                               border: Border.all(color: AppColors.mainBlue),
                               onTap: () {
-                                Get.to(() => const LoginScreen());
+                                Get.toNamed(Routes.LOGIN);
                               }),
                         ],
                       ),

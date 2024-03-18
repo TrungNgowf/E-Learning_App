@@ -1,4 +1,4 @@
-import '../common/export.dart';
+import '../utils/export.dart';
 
 class ReusableText extends StatelessWidget {
   final String text;
