@@ -1,5 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:e_learning_app/utils/export.dart';
+import 'package:e_learning_app/views/home/home_view.dart';
+import 'package:e_learning_app/views/profile/profile_view.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,13 +57,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
 Widget _buildPage(int index) {
   List<Widget> pages = <Widget>[
-    Container(
-        child: Center(
-      child: ReusableText(
-        "Home",
-        style: appStyle(color: AppColors.mainBlue),
-      ),
-    )),
+    const HomePage(),
     Container(
         child: Center(
       child: ReusableText(
@@ -83,13 +79,7 @@ Widget _buildPage(int index) {
         style: appStyle(color: AppColors.mainBlue),
       ),
     )),
-    Container(
-        child: Center(
-      child: ReusableText(
-        "Profile",
-        style: appStyle(color: AppColors.mainBlue),
-      ),
-    )),
+    const ProfilePage(),
   ];
   return pages[index];
 }

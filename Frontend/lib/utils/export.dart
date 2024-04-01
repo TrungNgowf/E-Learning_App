@@ -6,4 +6,5 @@ export 'package:e_learning_app/utils/app_routes.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:gap/gap.dart';
+export 'package:get/get.dart';
 export 'package:google_fonts/google_fonts.dart';

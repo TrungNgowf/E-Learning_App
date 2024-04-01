@@ -5,7 +5,6 @@ import 'package:e_learning_app/main.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import 'bloc/log_in_bloc.dart';
 
@@ -33,6 +32,9 @@ class LogInController {
             CustomToast.warning(
                 'Error', 'Please verify your email before logging in');
           } else {
+            log(credential.user!.uid);
+            log(credential.user!.email!);
+            log(credential.user!.displayName!);
             Global.storageService.setString(
                 AppStorageService.USER_TOKEN_KEY, credential.user!.uid);
             Get.offNamedUntil(Routes.NAVPAGE, (route) => false);

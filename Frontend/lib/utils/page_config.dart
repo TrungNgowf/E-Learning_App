@@ -4,6 +4,7 @@ import 'package:e_learning_app/views/log_in/bloc/log_in_bloc.dart';
 import 'package:e_learning_app/views/log_in/log_in_view.dart';
 import 'package:e_learning_app/views/navigation/bloc/navigation_bloc.dart';
 import 'package:e_learning_app/views/navigation/navigation_page_view.dart';
+import 'package:e_learning_app/views/profile/pages/setting/setting_view.dart';
 import 'package:e_learning_app/views/sign_up/bloc/sign_up_bloc.dart';
 import 'package:e_learning_app/views/sign_up/sign_up_view.dart';
 import 'package:e_learning_app/views/welcome/welcome.view.dart';
@@ -33,6 +34,10 @@ class AppPages {
         bloc: BlocProvider(
           create: (_) => NavigationBloc(),
         ),
+      ),
+      PageEntity(
+        route: Routes.SETTINGS,
+        page: const SettingPage(),
       ),
     ];
   }

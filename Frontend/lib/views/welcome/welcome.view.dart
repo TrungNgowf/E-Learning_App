@@ -95,6 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           CustomButton(
             text: isLastPage == true ? "Get Started" : "Next",
             width: 40.swp,
+            height: 5.shp,
             fontSize: 14,
             backGroundColor: AppColors.mainBlue,
             textColor: Colors.white,

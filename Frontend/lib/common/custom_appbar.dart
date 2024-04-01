@@ -1,7 +1,7 @@
 import 'package:e_learning_app/utils/export.dart';
 import 'package:get/get.dart';
 
-AppBar customAppbar(
+AppBar CustomAppbar(
     {required String title, Widget? leading, List<Widget>? trailing}) {
   return AppBar(
     title: ReusableText(

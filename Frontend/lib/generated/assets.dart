@@ -5,8 +5,14 @@ class Assets {
   static const String iconsApple = 'assets/icons/apple.png';
   static const String iconsFacebook = 'assets/icons/facebook.png';
   static const String iconsGoogle = 'assets/icons/google.png';
+  static const String imagesCoursePlaceHolder =
+      'assets/images/course_place_holder.jpg';
   static const String imagesLogIn = 'assets/images/log_in.png';
   static const String imagesLogInBg = 'assets/images/log_in_bg.jpg';
+  static const String imagesPEPE = 'assets/images/PEPE.jpg';
+  static const String imagesRcmCourse1 = 'assets/images/rcm_course_1.png';
+  static const String imagesRcmCourse2 = 'assets/images/rcm_course_2.png';
+  static const String imagesRcmCourse3 = 'assets/images/rcm_course_3.png';
   static const String imagesSignUp = 'assets/images/sign_up.png';
   static const String imagesWelcome1 = 'assets/images/welcome_1.png';
   static const String imagesWelcome2 = 'assets/images/welcome_2.png';

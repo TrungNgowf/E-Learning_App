@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final Border? border;
   final Color? textColor;
   final List<BoxShadow>? boxShadow;
+  final EdgeInsetsGeometry? padding;
   final void Function()? onTap;
 
   const CustomButton(
@@ -23,7 +24,8 @@ class CustomButton extends StatelessWidget {
       this.onTap,
       this.fontSize,
       this.textColor,
-      this.boxShadow});
+      this.boxShadow,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,9 @@ class CustomButton extends StatelessWidget {
         child: Card(
           elevation: 3,
           child: Container(
-            padding: EdgeInsets.all(2.swp),
-            width: width ?? 30.swp,
-            height: height ?? 5.shp,
+            padding: padding ?? EdgeInsets.all(2.swp),
+            width: width,
+            height: height,
             decoration: BoxDecoration(
                 color: backGroundColor ?? Colors.white,
                 border: border,

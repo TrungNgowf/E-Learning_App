@@ -33,15 +33,8 @@ class _LogInPageState extends State<LogInPage> {
             child: Container(
               height: 35.shp,
               width: 100.swp,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                    AppColors.mainBlue,
-                    Colors.green.shade300,
-                  ],
-                ),
+              decoration: const BoxDecoration(
+                gradient: AppColors.blueGreenGradient,
               ),
               child: Padding(
                 padding:

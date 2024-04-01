@@ -28,4 +28,8 @@ class StorageService {
         ? false
         : true;
   }
+
+  Future remove(String key) async {
+    await prefs.remove(key);
+  }
 }
