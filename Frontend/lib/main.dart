@@ -1,14 +1,18 @@
+import 'dart:io';
+
+import 'package:e_learning_app/dev/AppObservers.dart';
 import 'package:e_learning_app/firebase_options.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/utils/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import 'utils/page_config.dart';
 
 Future<void> main() async {
   await Global.init();
+  HttpOverrides.global = MyHttpOverrides();
+  Bloc.observer = AppObservers();
   runApp(const MyApp());
 }
 
@@ -34,6 +38,15 @@ class MyApp extends StatelessWidget {
                 onGenerateRoute: AppPages.onGenerateRoute,
               )),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 

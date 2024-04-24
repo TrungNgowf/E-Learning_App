@@ -146,7 +146,7 @@ Widget profileRow(IconData icon, String title,
 }
 
 void logout(BuildContext context) {
-  Global.storageService.remove(AppStorageService.USER_TOKEN_KEY);
+  Global.storageService.logout();
   context.read<NavigationBloc>().add(NavigationPageChanged(page: 0));
   Get.offNamedUntil(Routes.LOGIN, (route) => false);
 }

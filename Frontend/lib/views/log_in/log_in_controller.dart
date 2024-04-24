@@ -1,10 +1,11 @@
 import 'dart:developer';
 
 import 'package:e_learning_app/common/custom_toast.dart';
-import 'package:e_learning_app/main.dart';
+import 'package:e_learning_app/repositories/auth/auth_repository.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'bloc/log_in_bloc.dart';
 
@@ -13,7 +14,13 @@ class LogInController {
 
   LogInController(this.context);
 
+  AuthRepository _authRepository = AuthRepository();
+
   Future<void> logIn() async {
+    showDialog(
+        context: context,
+        builder: (context) => LoadingAnimationWidget.inkDrop(
+            color: AppColors.mainBlue, size: 10.swp));
     try {
       final state = context.read<LogInBloc>().state;
       String email = state.email;
@@ -35,8 +42,7 @@ class LogInController {
             log(credential.user!.uid);
             log(credential.user!.email!);
             log(credential.user!.displayName!);
-            Global.storageService.setString(
-                AppStorageService.USER_TOKEN_KEY, credential.user!.uid);
+            await saveUserLoginData(email);
             Get.offNamedUntil(Routes.NAVPAGE, (route) => false);
             CustomToast.success('Success', 'Logged in successfully');
           }
@@ -46,7 +52,20 @@ class LogInController {
       }
     } catch (e) {
       log(e.toString());
-      CustomToast.error('Error', e.toString(), duration: 5);
+      Navigator.of(context, rootNavigator: true).pop();
+      CustomToast.error('Error', e.toString(), duration: 3);
     }
+  }
+
+  Future saveUserLoginData(String email) async {
+    var map = {
+      'email': email,
+    };
+    var currentUser = await _authRepository.loginWithEmail(map);
+    if (currentUser == null) {
+      throw Exception('User not found');
+    }
+    Global.storageService.setProfile(currentUser);
+    ;
   }
 }

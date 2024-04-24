@@ -1,8 +1,7 @@
 import 'package:e_learning_app/common/custom_button.dart';
 import 'package:e_learning_app/generated/assets.dart';
-import 'package:e_learning_app/main.dart';
 import 'package:e_learning_app/utils/export.dart';
-import 'package:get/get.dart';
+import 'package:e_learning_app/utils/storage_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WelcomeScreen extends StatefulWidget {

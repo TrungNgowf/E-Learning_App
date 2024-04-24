@@ -6,7 +6,6 @@ import 'package:e_learning_app/views/log_in/log_in_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:get/get.dart';
 
 import '../../utils/export.dart';
 import 'bloc/log_in_bloc.dart';
@@ -78,6 +77,8 @@ class _LogInPageState extends State<LogInPage> {
                       CustomTextField(
                           name: "email",
                           label: "Email",
+                          // initialValue: Global.storageService.prefs
+                          //     .getString(AppStorageService.USER_EMAIL),
                           prefixIcon: const Icon(Icons.email_outlined),
                           onChanged: (value) {
                             context
@@ -157,7 +158,7 @@ class _LogInPageState extends State<LogInPage> {
                         textColor: Colors.white,
                         height: 6.shp,
                         width: 90.swp,
-                        onTap: () {
+                        onTap: () async {
                           if (_loginKey.currentState!.saveAndValidate()) {
                             LogInController(context).logIn();
                           }

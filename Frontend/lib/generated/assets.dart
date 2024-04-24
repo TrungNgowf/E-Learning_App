@@ -7,6 +7,8 @@ class Assets {
   static const String iconsGoogle = 'assets/icons/google.png';
   static const String imagesCoursePlaceHolder =
       'assets/images/course_place_holder.jpg';
+  static const String imagesInstructorRegister =
+      'assets/images/instructor-register.jpg';
   static const String imagesLogIn = 'assets/images/log_in.png';
   static const String imagesLogInBg = 'assets/images/log_in_bg.jpg';
   static const String imagesPEPE = 'assets/images/PEPE.jpg';

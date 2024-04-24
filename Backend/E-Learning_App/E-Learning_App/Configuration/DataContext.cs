@@ -1,3 +1,4 @@
+using E_Learning_App.Entities.Course;
 using E_Learning_App.Entities.Identity;
 using E_Learning_App.Entities.Identity.Master;
 using Microsoft.EntityFrameworkCore;
@@ -10,5 +11,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public DbSet<User> User { get; set; }
     public DbSet<Role> Role { get; set; }
     public DbSet<AccountType> AccountType { get; set; }
-    public DbSet<Gender> Gender { get; set; }
+    public DbSet<Course> Course { get; set; }
+    public DbSet<CourseCategory> CourseCategory { get; set; }
 };

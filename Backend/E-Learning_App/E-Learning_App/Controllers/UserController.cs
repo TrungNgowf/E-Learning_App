@@ -1,5 +1,8 @@
 using E_Learning_App.Configuration;
+using E_Learning_App.Entities;
 using E_Learning_App.Helpers;
+using E_Learning_App.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,39 +10,21 @@ namespace E_Learning_App.Controllers;
 
 [Route("[controller]/[action]")]
 [ApiController]
-public class UserController(DataContext context) : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly DataContext _context = context;
+    private readonly DataContext _context;
+    private readonly IUserService _userService;
     private readonly AppMapper _mapper = new();
 
-    [HttpGet]
-    public async Task<ActionResult> GetUsers()
+    public UserController(DataContext context, IUserService userService)
     {
-        try
-        {
-            var users = await _context.User.ToListAsync();
-            return Ok(users);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        _context = context;
+        _userService = userService;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult> GetUser(int id)
+    [HttpGet, Authorize]
+    public CurrentUser GetMe()
     {
-        try
-        {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == id);
-            return Ok(user);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return _userService.GetCurrentUser();
     }
-    
 }

@@ -4,6 +4,7 @@ import 'package:e_learning_app/common/custom_button.dart';
 import 'package:e_learning_app/common/custom_textfield.dart';
 import 'package:e_learning_app/generated/assets.dart';
 import 'package:e_learning_app/utils/export.dart';
+import 'package:e_learning_app/views/home/home_controller.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  HomeController _controller = HomeController();
   List<String> coursesRecommendation = [
     Assets.imagesRcmCourse1,
     Assets.imagesRcmCourse2,
@@ -68,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       GradientText(
-                        "John Doe",
+                        Global.storageService.currentUser!.username,
                         style: appStyle(
                           size: 30,
                           fw: FontWeight.w600,
@@ -100,7 +102,9 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _controller.getMe();
+                        },
                         icon: const Icon(
                           Icons.filter_list,
                           color: Colors.white,

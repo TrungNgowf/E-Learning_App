@@ -32,27 +32,34 @@ namespace E_Learning_App.Controllers
             _userService = userService;
         }
 
-        private async Task<User> Register(CreateUserDto createUserDto)
+        [HttpPost]
+        public async Task<bool> Register(CreateUserDto createUserDto)
         {
             try
             {
-                User user = _mapper.MapCreateUserDtoToUser(createUserDto);
-                user.FirebaseUID = Guid.NewGuid().ToString();
-                user.AccountType =
-                    (await _context.AccountType.FirstOrDefaultAsync(accountType =>
-                        accountType.Id == createUserDto.AccountTypeId)!)!;
-                user.Gender =
-                    (await _context.Gender.FirstOrDefaultAsync(gender => gender.Id == createUserDto.GenderId)!)!;
-                ICollection<Role> roles = new List<Role>();
-                foreach (var roleId in createUserDto.RoleIds)
+                var existingUser = await _context.User.FirstOrDefaultAsync(user =>
+                    user.Email == createUserDto.Email || user.FirebaseUID == createUserDto.FirebaseUID);
+                if (existingUser != null)
                 {
-                    roles.Add((await _context.Role.FirstOrDefaultAsync(r => r.Id == roleId)!)!);
+                    throw new Exception("User already exists");
                 }
+                else
+                {
+                    User user = _mapper.MapCreateUserDtoToUser(createUserDto);
+                    user.AccountType =
+                        (await _context.AccountType.FirstOrDefaultAsync(accountType =>
+                            accountType.Id == createUserDto.AccountTypeId)!)!;
+                    ICollection<Role> roles = new List<Role>();
+                    foreach (var roleId in createUserDto.RoleIds)
+                    {
+                        roles.Add((await _context.Role.FirstOrDefaultAsync(r => r.Id == roleId)!)!);
+                    }
 
-                user.Roles = roles;
-                _context.User.Add(user);
-                await _context.SaveChangesAsync();
-                return user;
+                    user.Roles = roles;
+                    _context.User.Add(user);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
             }
             catch (Exception e)
             {
@@ -62,31 +69,39 @@ namespace E_Learning_App.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(CreateUserDto createUserDto)
+        public async Task<ActionResult<AuthResponseDto>> Login(AuthRequestDto requestDto)
         {
-            User callbackUser;
             var currentUser =
                 await _context.User
-                    .FirstOrDefaultAsync(user => user.Email == createUserDto.Email)!;
-            if (currentUser != null)
+                    .FirstOrDefaultAsync(user => user.Email == requestDto.Email)!;
+            if (currentUser == null)
             {
-                callbackUser = currentUser;
+                return Unauthorized("Invalid email");
             }
             else
             {
-                var createdUser = await Register(createUserDto);
-                callbackUser = createdUser;
-            }
+                currentUser.IsEmailVerified = true;
+                var token = CreateToken(currentUser);
+                var refreshToken = GenerateRefreshToken();
+                SetRefreshToken(refreshToken);
+                currentUser.RefreshToken = refreshToken.Token;
+                currentUser.RefreshTokenCreated = refreshToken.CreationTime;
+                currentUser.RefreshTokenExpiry = refreshToken.ExpiredDate;
+                _context.User.Update(currentUser);
+                await _context.SaveChangesAsync();
 
-            var token = CreateToken(callbackUser);
-            var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken);
-            callbackUser.RefreshToken = refreshToken.Token;
-            callbackUser.RefreshTokenCreated = refreshToken.CreationTime;
-            callbackUser.RefreshTokenExpiry = refreshToken.ExpiredDate;
-            _context.User.Update(callbackUser);
-            await _context.SaveChangesAsync();
-            return Ok(token);
+                AuthResponseDto authResponseDto = new()
+                {
+                    UserId = currentUser.Id,
+                    FirebaseUID = currentUser.FirebaseUID,
+                    Username = currentUser.Username,
+                    Email = currentUser.Email,
+                    AccessToken = token,
+                    RefreshToken = refreshToken.Token,
+                    Roles = currentUser.Roles.Select(role => role.EnName).ToList()
+                };
+                return Ok(authResponseDto);
+            }
         }
 
         private string CreateToken(User user)
@@ -119,7 +134,7 @@ namespace E_Learning_App.Controllers
             var refreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                ExpiredDate = DateTime.Now.AddDays(7)
+                ExpiredDate = DateTime.Now.AddDays(7),
             };
             return refreshToken;
         }
@@ -134,30 +149,23 @@ namespace E_Learning_App.Controllers
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
 
-        [HttpPost, Authorize]
-        public async Task<ActionResult<string>> RefreshToken()
+        [HttpGet]
+        public async Task<ActionResult<string>> RefreshToken(long userId, string refreshToken)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _context.User.FirstOrDefaultAsync(u =>
-                u.Id == int.Parse(userId!));
+                u.Id == userId);
             if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid refresh token");
-            if (user.RefreshTokenExpiry < DateTime.Now) return Unauthorized("Refresh token expired");
+            if (user.RefreshTokenExpiry < DateTime.Now) return StatusCode(401, "Refresh token expired");
             var token = CreateToken(user);
-            var newRefreshToken = GenerateRefreshToken();
-            SetRefreshToken(newRefreshToken);
-            user.RefreshToken = newRefreshToken.Token;
-            user.RefreshTokenCreated = newRefreshToken.CreationTime;
-            user.RefreshTokenExpiry = newRefreshToken.ExpiredDate;
-            _context.User.Update(user);
-            await _context.SaveChangesAsync();
+            // var newRefreshToken = GenerateRefreshToken();
+            // SetRefreshToken(newRefreshToken);
+            // user.RefreshToken = newRefreshToken.Token;
+            // user.RefreshTokenCreated = newRefreshToken.CreationTime;
+            // user.RefreshTokenExpiry = newRefreshToken.ExpiredDate;
+            // _context.User.Update(user);
+            // await _context.SaveChangesAsync();
             return Ok(token);
         }
-
-        [HttpGet, Authorize]
-        public CurrentUser GetMe()
-        {
-            return _userService.GetCurrentUser();
-        }
+        
     }
 }

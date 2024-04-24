@@ -21,9 +21,3 @@ class AppColors {
     ],
   );
 }
-
-class AppStorageService {
-  static const String HAVE_OPENED_BEFORE = 'device_opened_before';
-  static const String USER_TOKEN_KEY = 'user_token_key';
-  static const String USER_PROFILE_KEY = 'user_profile_key';
-}

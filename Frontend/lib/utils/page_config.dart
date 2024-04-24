@@ -1,9 +1,10 @@
-import 'package:e_learning_app/main.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/log_in/bloc/log_in_bloc.dart';
 import 'package:e_learning_app/views/log_in/log_in_view.dart';
 import 'package:e_learning_app/views/navigation/bloc/navigation_bloc.dart';
 import 'package:e_learning_app/views/navigation/navigation_page_view.dart';
+import 'package:e_learning_app/views/profile/pages/instructor_registration/bloc/instructor_registration_bloc.dart';
+import 'package:e_learning_app/views/profile/pages/instructor_registration/instructor_registration.dart';
 import 'package:e_learning_app/views/profile/pages/setting/setting_view.dart';
 import 'package:e_learning_app/views/sign_up/bloc/sign_up_bloc.dart';
 import 'package:e_learning_app/views/sign_up/sign_up_view.dart';
@@ -39,6 +40,10 @@ class AppPages {
         route: Routes.SETTINGS,
         page: const SettingPage(),
       ),
+      PageEntity(
+          route: Routes.INSTRUCTOR_REGISTRATION,
+          page: const InstructorRegistration(),
+          bloc: BlocProvider(create: (_) => InstructorRegistrationBloc())),
     ];
   }
 
