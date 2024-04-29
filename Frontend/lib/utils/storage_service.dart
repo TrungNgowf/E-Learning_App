@@ -48,6 +48,12 @@ class StorageService {
         : true;
   }
 
+  bool get isInstructor {
+    return prefs
+        .getStringList(AppStorageService.USER_ROLES)!
+        .contains('Instructor');
+  }
+
   Future remove(String key) async {
     await prefs.remove(key);
   }

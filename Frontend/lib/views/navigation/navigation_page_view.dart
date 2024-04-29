@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/home/home_view.dart';
+import 'package:e_learning_app/views/instructor/created_courses/created_courses_view.dart';
 import 'package:e_learning_app/views/profile/profile_view.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,19 +34,18 @@ class _NavigationPageState extends State<NavigationPage> {
               animationDuration: const Duration(milliseconds: 300),
               animationCurve: Curves.easeInOut,
               height: 70,
-              items: const <Widget>[
-                Icon(Icons.home, size: 30, color: Colors.white),
-                Icon(Icons.search, size: 30, color: Colors.white),
-                Icon(Icons.add, size: 30, color: Colors.white),
-                Icon(Icons.favorite, size: 30, color: Colors.white),
-                Icon(Icons.person, size: 30, color: Colors.white),
+              items: <Widget>[
+                const Icon(Icons.home, size: 30, color: Colors.white),
+                const Icon(Icons.search, size: 30, color: Colors.white),
+                if (Global.storageService.isInstructor)
+                  const Icon(Icons.add, size: 30, color: Colors.white),
+                const Icon(Icons.favorite, size: 30, color: Colors.white),
+                const Icon(Icons.person, size: 30, color: Colors.white),
               ],
               onTap: (index) {
-                setState(() {
-                  context
-                      .read<NavigationBloc>()
-                      .add(NavigationPageChanged(page: index));
-                });
+                context
+                    .read<NavigationBloc>()
+                    .add(NavigationPageChanged(page: index));
               },
             ),
           ),
@@ -58,27 +58,19 @@ class _NavigationPageState extends State<NavigationPage> {
 Widget _buildPage(int index) {
   List<Widget> pages = <Widget>[
     const HomePage(),
-    Container(
-        child: Center(
+    Center(
       child: ReusableText(
         "Search",
         style: appStyle(color: AppColors.mainBlue),
       ),
-    )),
-    Container(
-        child: Center(
-      child: ReusableText(
-        "Add",
-        style: appStyle(color: AppColors.mainBlue),
-      ),
-    )),
-    Container(
-        child: Center(
+    ),
+    if (Global.storageService.isInstructor) const CreatedCourses(),
+    Center(
       child: ReusableText(
         "Liked",
         style: appStyle(color: AppColors.mainBlue),
       ),
-    )),
+    ),
     const ProfilePage(),
   ];
   return pages[index];

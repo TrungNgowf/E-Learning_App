@@ -100,7 +100,7 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
             Gap(1.shp),
-            instructorBtn(),
+            if (!Global.storageService.isInstructor) instructorBtn(),
             Gap(1.shp),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

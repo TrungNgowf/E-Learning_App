@@ -1,4 +1,4 @@
-import 'package:e_learning_app/utils/http_util.dart';
+import 'package:e_learning_app/utils/api_config/http_util.dart';
 
 class AuthService {
   static Future signUpWithEmail(Map<String, dynamic> request) async {
@@ -14,9 +14,5 @@ class AuthService {
       'userId': userId,
       'refreshToken': refreshToken,
     });
-  }
-
-  static Future getMe() async {
-    return await HttpUtil().get('/Auth/GetMe');
   }
 }

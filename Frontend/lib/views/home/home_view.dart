@@ -102,9 +102,7 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: IconButton(
-                        onPressed: () {
-                          _controller.getMe();
-                        },
+                        onPressed: () {},
                         icon: const Icon(
                           Icons.filter_list,
                           color: Colors.white,

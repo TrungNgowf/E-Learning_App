@@ -41,17 +41,4 @@ class AuthRepository {
       throw Exception(e);
     }
   }
-
-  Future getMe() async {
-    try {
-      var response = await AuthService.getMe();
-      if (response.statusCode == 200) {
-        return response.data;
-      } else {
-        throw Exception(response.statusMessage);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
 }

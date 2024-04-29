@@ -72,7 +72,7 @@ namespace E_Learning_App.Controllers
         public async Task<ActionResult<AuthResponseDto>> Login(AuthRequestDto requestDto)
         {
             var currentUser =
-                await _context.User
+                await _context.User.Include(u=>u.Roles)
                     .FirstOrDefaultAsync(user => user.Email == requestDto.Email)!;
             if (currentUser == null)
             {
@@ -152,9 +152,9 @@ namespace E_Learning_App.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> RefreshToken(long userId, string refreshToken)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u =>
+            var user = await _context.User.Include(u => u.Roles).FirstOrDefaultAsync(u =>
                 u.Id == userId);
-            if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid refresh token");
+            if (!user!.RefreshToken!.Equals(refreshToken)) return Unauthorized("Invalid refresh token");
             if (user.RefreshTokenExpiry < DateTime.Now) return StatusCode(401, "Refresh token expired");
             var token = CreateToken(user);
             // var newRefreshToken = GenerateRefreshToken();
@@ -166,6 +166,5 @@ namespace E_Learning_App.Controllers
             // await _context.SaveChangesAsync();
             return Ok(token);
         }
-        
     }
 }

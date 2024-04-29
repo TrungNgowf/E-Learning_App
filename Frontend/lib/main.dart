@@ -7,7 +7,7 @@ import 'package:e_learning_app/utils/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'utils/page_config.dart';
+import 'utils/route_config/page_config.dart';
 
 Future<void> main() async {
   await Global.init();

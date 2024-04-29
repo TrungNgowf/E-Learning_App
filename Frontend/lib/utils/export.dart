@@ -3,7 +3,7 @@ export 'package:e_learning_app/common/custom_appbar.dart';
 export 'package:e_learning_app/common/reusable_text.dart';
 export 'package:e_learning_app/constants/app_constants.dart';
 export 'package:e_learning_app/main.dart';
-export 'package:e_learning_app/utils/app_routes.dart';
+export 'package:e_learning_app/utils/route_config/app_routes.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:gap/gap.dart';

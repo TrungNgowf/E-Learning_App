@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using E_Learning_App.Entities.Identity.Master;
+using E_Learning_App.Entities.Profile;
 
 namespace E_Learning_App.Entities.Identity;
 
@@ -19,4 +20,5 @@ public class User : Entity
     public DateTime? RefreshTokenCreated { get; set; }
     public DateTime? RefreshTokenExpiry { get; set; }
     public bool IsEmailVerified { get; set; } = false;
+    public virtual Instructor? Instructor { get; set; }
 }

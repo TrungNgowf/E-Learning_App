@@ -33,11 +33,14 @@ class LogInController {
             password: password,
           );
           if (credential.user == null) {
+            Get.back();
             CustomToast.error(
                 'Error', 'User not found. Check your credentials');
           } else if (!credential.user!.emailVerified) {
+            Get.back();
             CustomToast.warning(
                 'Error', 'Please verify your email before logging in');
+            credential.user!.sendEmailVerification();
           } else {
             log(credential.user!.uid);
             log(credential.user!.email!);

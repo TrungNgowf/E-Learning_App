@@ -48,7 +48,6 @@ builder.Services.AddAuthentication().AddJwtBearer(opt =>
 });
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseLazyLoadingProxies();
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
                          throw new InvalidOperationException($"Connection string not found"));
 });
