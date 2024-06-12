@@ -76,6 +76,7 @@ namespace E_Learning_App.Migrations
                     RefreshTokenCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RefreshTokenExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
+                    AccountBalance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<long>(type: "bigint", nullable: false),
                     LastModifiedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -196,6 +197,82 @@ namespace E_Learning_App.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Lesson",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<long>(type: "bigint", nullable: false),
+                    CourseId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifiedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lesson", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lesson_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LikedCourse",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    CourseId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifiedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikedCourse", x => new { x.UserId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_LikedCourse_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LikedCourse_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PurchasedCourse",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    CourseId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<long>(type: "bigint", nullable: false),
+                    LastModifiedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchasedCourse", x => new { x.UserId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_PurchasedCourse_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PurchasedCourse_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Course_InstructorId",
                 table: "Course",
@@ -213,6 +290,21 @@ namespace E_Learning_App.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Lesson_CourseId",
+                table: "Lesson",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikedCourse_CourseId",
+                table: "LikedCourse",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchasedCourse_CourseId",
+                table: "PurchasedCourse",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleUser_UsersId",
                 table: "RoleUser",
                 column: "UsersId");
@@ -228,6 +320,15 @@ namespace E_Learning_App.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CourseCourseCategory");
+
+            migrationBuilder.DropTable(
+                name: "Lesson");
+
+            migrationBuilder.DropTable(
+                name: "LikedCourse");
+
+            migrationBuilder.DropTable(
+                name: "PurchasedCourse");
 
             migrationBuilder.DropTable(
                 name: "RoleUser");

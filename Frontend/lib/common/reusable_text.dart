@@ -13,7 +13,7 @@ class ReusableText extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoSizeText(text,
         textAlign: textAlign ?? TextAlign.center,
-        maxLines: maxLines ?? 1,
+        maxLines: maxLines,
         overflow: TextOverflow.fade,
         style: style ??
             appStyle(size: 4, color: Colors.black, fw: FontWeight.normal));

@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using E_Learning_App.Entities.Course;
 using E_Learning_App.Entities.Identity.Master;
 using E_Learning_App.Entities.Profile;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Learning_App.Entities.Identity;
 
@@ -21,4 +23,7 @@ public class User : Entity
     public DateTime? RefreshTokenExpiry { get; set; }
     public bool IsEmailVerified { get; set; } = false;
     public virtual Instructor? Instructor { get; set; }
+    [Precision(18, 2)] public decimal AccountBalance { get; set; }
+    public virtual ICollection<LikedCourse> LikedCourses { get; set; } = new List<LikedCourse>();
+    public virtual ICollection<PurchasedCourse> PurchasedCourses { get; set; } = new List<PurchasedCourse>();
 }

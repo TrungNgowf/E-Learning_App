@@ -7,4 +7,5 @@ class Routes {
   static const String INSTRUCTOR_REGISTRATION =
       '/profile/instructor-registration';
   static const String ADDING_COURSE = '/my-courses/adding-course';
+  static const String COURSE_PREVIEW = '/my-courses/course-preview';
 }

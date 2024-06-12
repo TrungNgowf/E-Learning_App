@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:e_learning_app/constants/enum.dart';
 import 'package:e_learning_app/models/course/course_category.dart';
 import 'package:e_learning_app/repositories/course/course_repository.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 
 part 'adding_course_event.dart';
 part 'adding_course_state.dart';
@@ -26,6 +27,18 @@ class AddingCourseBloc extends Bloc<AddingCourseEvent, AddingCourseState> {
     });
     on<IncludeQuantity>((event, emit) {
       includeQuantity(event, emit);
+    });
+    on<AddLesson>((event, emit) {
+      addLesson(event, emit);
+    });
+    on<RemoveLesson>((event, emit) {
+      removeLesson(event, emit);
+    });
+    on<PickLessonVideo>((event, emit) {
+      pickLessonVideo(event, emit);
+    });
+    on<InitialSetup>((event, emit) {
+      emit(state.initialSetup());
     });
   }
 
@@ -60,5 +73,25 @@ class AddingCourseBloc extends Bloc<AddingCourseEvent, AddingCourseState> {
 
   void includeQuantity(IncludeQuantity event, Emitter<AddingCourseState> emit) {
     emit(state.copyWith(includeCount: event.count));
+  }
+
+  void addLesson(AddLesson event, Emitter<AddingCourseState> emit) {
+    emit(state.copyWith(
+        lessonVideos: List.from(state.lessonVideos)..add(null),
+        lessonFiles: List.from(state.lessonFiles)..add(null)));
+  }
+
+  void removeLesson(RemoveLesson event, Emitter<AddingCourseState> emit) {
+    emit(state.copyWith(
+        lessonVideos: List.from(state.lessonVideos)..removeAt(event.index),
+        lessonFiles: List.from(state.lessonFiles)..removeAt(event.index)));
+  }
+
+  void pickLessonVideo(PickLessonVideo event, Emitter<AddingCourseState> emit) {
+    final lessonVideos = List<FlickManager?>.from(state.lessonVideos);
+    lessonVideos[event.index] = event.video;
+    final lessonFiles = List<File?>.from(state.lessonFiles);
+    lessonFiles[event.index] = event.file;
+    emit(state.copyWith(lessonVideos: lessonVideos, lessonFiles: lessonFiles));
   }
 }

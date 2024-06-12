@@ -30,8 +30,24 @@ class IncludeQuantity extends AddingCourseEvent {
   IncludeQuantity(this.count);
 }
 
-class LessonQuantity extends AddingCourseEvent {
-  final int count;
+class AddLesson extends AddingCourseEvent {
+  AddLesson();
+}
 
-  LessonQuantity(this.count);
+class RemoveLesson extends AddingCourseEvent {
+  final int index;
+
+  RemoveLesson(this.index);
+}
+
+class PickLessonVideo extends AddingCourseEvent {
+  final FlickManager? video;
+  final File? file;
+  final int index;
+
+  PickLessonVideo(this.video, this.file, this.index);
+}
+
+class InitialSetup extends AddingCourseEvent {
+  InitialSetup();
 }

@@ -28,7 +28,7 @@ class _NavigationPageState extends State<NavigationPage> {
           child: Scaffold(
             body: _buildPage(context.read<NavigationBloc>().state.currentPage),
             bottomNavigationBar: CurvedNavigationBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               color: AppColors.mainBlue,
               buttonBackgroundColor: AppColors.mainBlue,
               animationDuration: const Duration(milliseconds: 300),

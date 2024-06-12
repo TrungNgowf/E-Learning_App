@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning_App.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240426185225_InitialDB")]
+    [Migration("20240611204047_InitialDB")]
     partial class InitialDB
     {
         /// <inheritdoc />
@@ -128,6 +128,96 @@ namespace E_Learning_App.Migrations
                     b.ToTable("CourseCategory");
                 });
 
+            modelBuilder.Entity("E_Learning_App.Entities.Course.Lesson", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Duration")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModifiedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VideoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Lesson");
+                });
+
+            modelBuilder.Entity("E_Learning_App.Entities.Course.LikedCourse", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModifiedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("LikedCourse");
+                });
+
+            modelBuilder.Entity("E_Learning_App.Entities.Course.PurchasedCourse", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModifiedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("PurchasedCourse");
+                });
+
             modelBuilder.Entity("E_Learning_App.Entities.Identity.Master.AccountType", b =>
                 {
                     b.Property<long>("Id")
@@ -187,6 +277,10 @@ namespace E_Learning_App.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("AccountBalance")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long>("AccountTypeId")
                         .HasColumnType("bigint");
@@ -323,6 +417,55 @@ namespace E_Learning_App.Migrations
                     b.Navigation("Instructor");
                 });
 
+            modelBuilder.Entity("E_Learning_App.Entities.Course.Lesson", b =>
+                {
+                    b.HasOne("E_Learning_App.Entities.Course.Course", "Course")
+                        .WithMany("Lessons")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("E_Learning_App.Entities.Course.LikedCourse", b =>
+                {
+                    b.HasOne("E_Learning_App.Entities.Course.Course", "Course")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("E_Learning_App.Entities.Identity.User", "User")
+                        .WithMany("LikedCourses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("E_Learning_App.Entities.Course.PurchasedCourse", b =>
+                {
+                    b.HasOne("E_Learning_App.Entities.Course.Course", "Course")
+                        .WithMany("PurchasedByUsers")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("E_Learning_App.Entities.Identity.User", "User")
+                        .WithMany("PurchasedCourses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("E_Learning_App.Entities.Identity.User", b =>
                 {
                     b.HasOne("E_Learning_App.Entities.Identity.Master.AccountType", "AccountType")
@@ -360,9 +503,22 @@ namespace E_Learning_App.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("E_Learning_App.Entities.Course.Course", b =>
+                {
+                    b.Navigation("Lessons");
+
+                    b.Navigation("LikedByUsers");
+
+                    b.Navigation("PurchasedByUsers");
+                });
+
             modelBuilder.Entity("E_Learning_App.Entities.Identity.User", b =>
                 {
                     b.Navigation("Instructor");
+
+                    b.Navigation("LikedCourses");
+
+                    b.Navigation("PurchasedCourses");
                 });
 
             modelBuilder.Entity("E_Learning_App.Entities.Profile.Instructor", b =>

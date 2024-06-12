@@ -1,6 +1,7 @@
 import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/instructor/created_courses/pages/adding_course/adding_course_view.dart';
 import 'package:e_learning_app/views/instructor/created_courses/pages/adding_course/bloc/adding_course_bloc.dart';
+import 'package:e_learning_app/views/instructor/created_courses/pages/course_preview/course_preview_view.dart';
 import 'package:e_learning_app/views/log_in/bloc/log_in_bloc.dart';
 import 'package:e_learning_app/views/log_in/log_in_view.dart';
 import 'package:e_learning_app/views/navigation/bloc/navigation_bloc.dart';
@@ -52,6 +53,10 @@ class AppPages {
         bloc: BlocProvider(
           create: (_) => AddingCourseBloc(),
         ),
+      ),
+      PageEntity(
+        route: Routes.COURSE_PREVIEW,
+        page: const CoursePreview(),
       )
     ];
   }

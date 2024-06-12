@@ -7,13 +7,13 @@ import 'package:e_learning_app/utils/export.dart' as global;
 import 'package:e_learning_app/utils/storage_service.dart';
 
 class HttpUtil {
-  static const String BASE_URL = 'https://192.168.39.92:2502';
-  AuthRepository _authRepository = AuthRepository();
+  static const String BASE_URL = 'https://192.168.1.5:2502';
+  final AuthRepository _authRepository = AuthRepository();
 
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: BASE_URL,
-      connectTimeout: const Duration(seconds: 5),
+      connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 5),
       contentType: 'application/json',
       responseType: ResponseType.json,

@@ -1,3 +1,4 @@
+using E_Learning_App.Entities.Identity;
 using E_Learning_App.Entities.Profile;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,4 +19,7 @@ public class Course : Entity
     public string? Requirements { get; set; }
     public string? WhatYouWillLearn { get; set; }
     public string? Includes { get; set; }
+    public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+    public ICollection<LikedCourse>? LikedByUsers { get; set; } 
+    public ICollection<PurchasedCourse>? PurchasedByUsers { get; set; }
 }
