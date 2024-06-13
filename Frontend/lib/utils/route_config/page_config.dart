@@ -6,9 +6,16 @@ import 'package:e_learning_app/views/log_in/bloc/log_in_bloc.dart';
 import 'package:e_learning_app/views/log_in/log_in_view.dart';
 import 'package:e_learning_app/views/navigation/bloc/navigation_bloc.dart';
 import 'package:e_learning_app/views/navigation/navigation_page_view.dart';
+import 'package:e_learning_app/views/online/online_view.dart';
+import 'package:e_learning_app/views/online/pages/chatting/bloc/chatting_bloc.dart';
+import 'package:e_learning_app/views/online/pages/chatting/chatting_view.dart';
+import 'package:e_learning_app/views/online/pages/streaming/bloc/streaming_bloc.dart';
+import 'package:e_learning_app/views/online/pages/streaming/streaming_view.dart';
+import 'package:e_learning_app/views/profile/bloc/profile_bloc.dart';
 import 'package:e_learning_app/views/profile/pages/instructor_registration/bloc/instructor_registration_bloc.dart';
 import 'package:e_learning_app/views/profile/pages/instructor_registration/instructor_registration_view.dart';
 import 'package:e_learning_app/views/profile/pages/setting/setting_view.dart';
+import 'package:e_learning_app/views/profile/profile_view.dart';
 import 'package:e_learning_app/views/sign_up/bloc/sign_up_bloc.dart';
 import 'package:e_learning_app/views/sign_up/sign_up_view.dart';
 import 'package:e_learning_app/views/welcome/welcome.view.dart';
@@ -40,6 +47,13 @@ class AppPages {
         ),
       ),
       PageEntity(
+        route: Routes.PROFILE,
+        page: const ProfilePage(),
+        bloc: BlocProvider(
+          create: (_) => ProfileBloc(),
+        ),
+      ),
+      PageEntity(
         route: Routes.SETTINGS,
         page: const SettingPage(),
       ),
@@ -57,7 +71,16 @@ class AppPages {
       PageEntity(
         route: Routes.COURSE_PREVIEW,
         page: const CoursePreview(),
-      )
+      ),
+      PageEntity(route: Routes.ONLINE, page: const OnlinePage()),
+      PageEntity(
+          route: Routes.CHATTING,
+          page: const ChattingPage(),
+          bloc: BlocProvider(create: (_) => ChattingBloc())),
+      PageEntity(
+          route: Routes.STREAMING,
+          page: const StreamingPage(),
+          bloc: BlocProvider(create: (_) => StreamingBloc())),
     ];
   }
 

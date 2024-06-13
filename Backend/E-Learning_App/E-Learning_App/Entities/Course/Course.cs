@@ -20,6 +20,6 @@ public class Course : Entity
     public string? WhatYouWillLearn { get; set; }
     public string? Includes { get; set; }
     public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
-    public ICollection<LikedCourse>? LikedByUsers { get; set; } 
-    public ICollection<PurchasedCourse>? PurchasedByUsers { get; set; }
+    public ICollection<User>? LikedByUsers { get; set; } 
+    public ICollection<User>? PurchasedByUsers { get; set; }
 }

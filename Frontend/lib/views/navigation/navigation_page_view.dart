@@ -2,7 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/home/home_view.dart';
 import 'package:e_learning_app/views/instructor/created_courses/created_courses_view.dart';
-import 'package:e_learning_app/views/profile/profile_view.dart';
+import 'package:e_learning_app/views/online/online_view.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,8 +39,9 @@ class _NavigationPageState extends State<NavigationPage> {
                 const Icon(Icons.search, size: 30, color: Colors.white),
                 if (Global.storageService.isInstructor)
                   const Icon(Icons.add, size: 30, color: Colors.white),
+                const Icon(Icons.voice_chat_rounded,
+                    size: 30, color: Colors.white),
                 const Icon(Icons.favorite, size: 30, color: Colors.white),
-                const Icon(Icons.person, size: 30, color: Colors.white),
               ],
               onTap: (index) {
                 context
@@ -65,13 +66,13 @@ Widget _buildPage(int index) {
       ),
     ),
     if (Global.storageService.isInstructor) const CreatedCourses(),
+    const OnlinePage(),
     Center(
       child: ReusableText(
         "Liked",
         style: appStyle(color: AppColors.mainBlue),
       ),
     ),
-    const ProfilePage(),
   ];
   return pages[index];
 }

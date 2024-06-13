@@ -25,35 +25,27 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     {
         base.OnModelCreating(modelBuilder);
 
-
-        modelBuilder.Entity<LikedCourse>()
-            .HasKey(lc => new { lc.UserId, lc.CourseId });
-
-        modelBuilder.Entity<LikedCourse>()
-            .HasOne(lc => lc.User)
-            .WithMany(u => u.LikedCourses)
-            .HasForeignKey(lc => lc.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder.Entity<LikedCourse>()
-            .HasOne(lc => lc.Course)
-            .WithMany(c => c.LikedByUsers)
-            .HasForeignKey(lc => lc.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder.Entity<PurchasedCourse>()
-            .HasKey(pc => new { pc.UserId, pc.CourseId });
-
-        modelBuilder.Entity<PurchasedCourse>()
-            .HasOne(pc => pc.User)
-            .WithMany(u => u.PurchasedCourses)
-            .HasForeignKey(pc => pc.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder.Entity<PurchasedCourse>()
-            .HasOne(pc => pc.Course)
-            .WithMany(c => c.PurchasedByUsers)
-            .HasForeignKey(pc => pc.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.LikedCourses)
+            .WithMany(r => r.LikedByUsers)
+            .UsingEntity<LikedCourse>(
+                j => j.HasOne<Course>()
+                    .WithMany().OnDelete(DeleteBehavior.Restrict)
+                    .HasForeignKey(l => l.CourseId),
+                j => j.HasOne<User>()
+                    .WithMany().OnDelete(DeleteBehavior.Restrict)
+                    .HasForeignKey(l => l.UserId),
+                j => j.HasKey(l => new { l.UserId, l.CourseId }));
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.PurchasedCourses)
+            .WithMany(r => r.PurchasedByUsers)
+            .UsingEntity<PurchasedCourse>(
+                j => j.HasOne<Course>()
+                    .WithMany().OnDelete(DeleteBehavior.Restrict)
+                    .HasForeignKey(l => l.CourseId),
+                j => j.HasOne<User>()
+                    .WithMany().OnDelete(DeleteBehavior.Restrict)
+                    .HasForeignKey(l => l.UserId),
+                j => j.HasKey(l => new { l.UserId, l.CourseId }));
     }
 };

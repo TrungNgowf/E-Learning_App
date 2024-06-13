@@ -7,7 +7,7 @@ import 'package:e_learning_app/utils/export.dart' as global;
 import 'package:e_learning_app/utils/storage_service.dart';
 
 class HttpUtil {
-  static const String BASE_URL = 'https://192.168.1.5:2502';
+  static const String BASE_URL = 'https://192.168.1.9:2502';
   final AuthRepository _authRepository = AuthRepository();
 
   final Dio _dio = Dio(

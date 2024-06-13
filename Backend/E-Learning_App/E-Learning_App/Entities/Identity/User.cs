@@ -24,6 +24,6 @@ public class User : Entity
     public bool IsEmailVerified { get; set; } = false;
     public virtual Instructor? Instructor { get; set; }
     [Precision(18, 2)] public decimal AccountBalance { get; set; }
-    public virtual ICollection<LikedCourse> LikedCourses { get; set; } = new List<LikedCourse>();
-    public virtual ICollection<PurchasedCourse> PurchasedCourses { get; set; } = new List<PurchasedCourse>();
+    public virtual ICollection<Course.Course> LikedCourses { get; set; } = new List<Course.Course>();
+    public virtual ICollection<Course.Course> PurchasedCourses { get; set; } = new List<Course.Course>();
 }

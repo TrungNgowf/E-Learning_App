@@ -1,5 +1,4 @@
 import 'package:e_learning_app/common/custom_button.dart';
-import 'package:e_learning_app/main.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/navigation/bloc/navigation_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,56 +35,10 @@ class _SettingPageState extends State<SettingPage> {
             Gap(3.shp),
             CustomButton(
               onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          title: Center(
-                            child: ReusableText(
-                              "Log Out",
-                              style: appStyle(
-                                  size: 25,
-                                  fw: FontWeight.bold,
-                                  color: AppColors.mainRed),
-                            ),
-                          ),
-                          content: ReusableText(
-                            "Are you sure you want to log out?",
-                            style: appStyle(size: 20, fw: FontWeight.w500),
-                          ),
-                          actions: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CustomButton(
-                                    onTap: () => logout(context),
-                                    backGroundColor: AppColors.mainRed,
-                                    textColor: Colors.white,
-                                    height: 5.shp,
-                                    width: 20.swp,
-                                    child: ReusableText("Yes",
-                                        style: appStyle(
-                                            color: Colors.white,
-                                            size: 16,
-                                            fw: FontWeight.w600))),
-                                CustomButton(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    height: 5.shp,
-                                    width: 20.swp,
-                                    backGroundColor: Colors.white,
-                                    textColor: AppColors.mainRed,
-                                    child: ReusableText("No",
-                                        style: appStyle(
-                                            color: AppColors.mainRed,
-                                            size: 16,
-                                            fw: FontWeight.w600)))
-                              ],
-                            ),
-                          ],
-                        ));
+                // showDialog(
+                //     context: context,
+                //     builder: (context) => logOutDialog(context));
+                logout(context);
               },
               backGroundColor: AppColors.mainRed,
               textColor: Colors.white,
@@ -105,6 +58,45 @@ class _SettingPageState extends State<SettingPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget logOutDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      title: Center(
+        child: ReusableText(
+          "Log Out",
+          style:
+              appStyle(size: 25, fw: FontWeight.bold, color: AppColors.mainRed),
+        ),
+      ),
+      content: ReusableText(
+        "Are you sure you want to log out?",
+        style: appStyle(size: 20, fw: FontWeight.w500),
+      ),
+      actions: [
+        CustomButton(
+            onTap: () => logout(context),
+            backGroundColor: AppColors.mainRed,
+            textColor: Colors.white,
+            height: 5.shp,
+            width: 20.swp,
+            child: ReusableText("Yes",
+                style: appStyle(
+                    color: Colors.white, size: 16, fw: FontWeight.w600))),
+        CustomButton(
+            onTap: () {
+              Get.back();
+            },
+            height: 5.shp,
+            width: 20.swp,
+            backGroundColor: Colors.white,
+            textColor: AppColors.mainRed,
+            child: ReusableText("No",
+                style: appStyle(
+                    color: AppColors.mainRed, size: 16, fw: FontWeight.w600))),
+      ],
     );
   }
 }

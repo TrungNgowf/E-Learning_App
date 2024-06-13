@@ -427,40 +427,32 @@ namespace E_Learning_App.Migrations
 
             modelBuilder.Entity("E_Learning_App.Entities.Course.LikedCourse", b =>
                 {
-                    b.HasOne("E_Learning_App.Entities.Course.Course", "Course")
-                        .WithMany("LikedByUsers")
+                    b.HasOne("E_Learning_App.Entities.Course.Course", null)
+                        .WithMany()
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("E_Learning_App.Entities.Identity.User", "User")
-                        .WithMany("LikedCourses")
+                    b.HasOne("E_Learning_App.Entities.Identity.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("E_Learning_App.Entities.Course.PurchasedCourse", b =>
                 {
-                    b.HasOne("E_Learning_App.Entities.Course.Course", "Course")
-                        .WithMany("PurchasedByUsers")
+                    b.HasOne("E_Learning_App.Entities.Course.Course", null)
+                        .WithMany()
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("E_Learning_App.Entities.Identity.User", "User")
-                        .WithMany("PurchasedCourses")
+                    b.HasOne("E_Learning_App.Entities.Identity.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("E_Learning_App.Entities.Identity.User", b =>
@@ -503,19 +495,11 @@ namespace E_Learning_App.Migrations
             modelBuilder.Entity("E_Learning_App.Entities.Course.Course", b =>
                 {
                     b.Navigation("Lessons");
-
-                    b.Navigation("LikedByUsers");
-
-                    b.Navigation("PurchasedByUsers");
                 });
 
             modelBuilder.Entity("E_Learning_App.Entities.Identity.User", b =>
                 {
                     b.Navigation("Instructor");
-
-                    b.Navigation("LikedCourses");
-
-                    b.Navigation("PurchasedCourses");
                 });
 
             modelBuilder.Entity("E_Learning_App.Entities.Profile.Instructor", b =>

@@ -137,8 +137,9 @@ class _CreatedCoursesState extends State<CreatedCourses> {
         ),
         color: Colors.white,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.swp, vertical: 1.shp),
+          padding: EdgeInsets.symmetric(horizontal: 3.swp, vertical: 1.shp),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
@@ -156,7 +157,8 @@ class _CreatedCoursesState extends State<CreatedCourses> {
                   children: [
                     ReusableText(
                       course.title,
-                      maxLines: 1,
+                      textAlign: TextAlign.start,
+                      maxLines: 3,
                       style: appStyle(size: 16, fw: FontWeight.w600),
                     ),
                     Gap(0.5.shp),

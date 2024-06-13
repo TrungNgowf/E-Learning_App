@@ -202,25 +202,33 @@ class _CoursePreviewState extends State<CoursePreview> {
                                               style: appStyle(
                                                   size: 15,
                                                   fw: FontWeight.w400)),
-                                          Gap(1.swp),
-                                          const Icon(Icons.circle,
-                                              size: 5,
-                                              color: AppColors.mainBlue),
-                                          Gap(1.swp),
+                                        ],
+                                      ),
+                                      subtitle: Column(
+                                        children: [
                                           ReusableText(
-                                              "${secondsToTime(state.course.lessons[index].duration)} mins",
+                                              state.course.lessons[index]
+                                                  .description,
                                               textAlign: TextAlign.left,
                                               style: appStyle(
                                                   size: 13,
                                                   fw: FontWeight.w300)),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.circle,
+                                                  size: 5,
+                                                  color: AppColors.mainBlue),
+                                              Gap(1.swp),
+                                              ReusableText(
+                                                  " ${secondsToTime(state.course.lessons[index].duration)} mins",
+                                                  textAlign: TextAlign.left,
+                                                  style: appStyle(
+                                                      size: 13,
+                                                      fw: FontWeight.w300)),
+                                            ],
+                                          )
                                         ],
                                       ),
-                                      subtitle: ReusableText(
-                                          state.course.lessons[index]
-                                              .description,
-                                          textAlign: TextAlign.left,
-                                          style: appStyle(
-                                              size: 13, fw: FontWeight.w300)),
                                     )),
                           ),
                           Gap(7.shp)

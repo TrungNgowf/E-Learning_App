@@ -17,6 +17,7 @@ class Assets {
   static const String imagesRcmCourse2 = 'assets/images/rcm_course_2.png';
   static const String imagesRcmCourse3 = 'assets/images/rcm_course_3.png';
   static const String imagesSignUp = 'assets/images/sign_up.png';
+  static const String imagesStreamingBg = 'assets/images/streaming_bg.jpg';
   static const String imagesWelcome1 = 'assets/images/welcome_1.png';
   static const String imagesWelcome2 = 'assets/images/welcome_2.png';
   static const String imagesWelcome3 = 'assets/images/welcome_3.png';

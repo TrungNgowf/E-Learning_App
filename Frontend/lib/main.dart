@@ -30,6 +30,10 @@ class MyApp extends StatelessWidget {
                 title: 'E-Learning App',
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
+                  scaffoldBackgroundColor: Colors.white,
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: Colors.white,
+                  ),
                   useMaterial3: true,
                   primarySwatch: Colors.blue,
                   fontFamily: GoogleFonts.lexend().fontFamily,

@@ -39,7 +39,9 @@ class _HomePageState extends State<HomePage> {
           ),
           trailing: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(Routes.PROFILE);
+              },
               icon: const Icon(
                 Icons.account_circle_outlined,
                 color: Colors.black,
