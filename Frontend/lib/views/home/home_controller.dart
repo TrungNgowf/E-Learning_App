@@ -1,5 +1,5 @@
-import 'package:e_learning_app/repositories/auth/auth_repository.dart';
+import 'package:e_learning_app/repositories/home/home_repository.dart';
 
 class HomeController {
-  AuthRepository _authRepository = AuthRepository();
+  final HomeRepository _homeRepository = HomeRepository();
 }

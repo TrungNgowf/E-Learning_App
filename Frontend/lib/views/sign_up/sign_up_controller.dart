@@ -14,18 +14,15 @@ class SignUpController {
 
   SignUpController(this.context);
 
-  AuthRepository _authRepository = AuthRepository();
+  final AuthRepository _authRepository = AuthRepository();
 
   Future<void> signUp() async {
     showDialog(
         context: context,
-        builder: (context) =>
-            LoadingAnimationWidget.inkDrop(
-                color: AppColors.mainBlue, size: 10.swp));
+        builder: (context) => LoadingAnimationWidget.inkDrop(
+            color: AppColors.mainBlue, size: 10.swp));
     try {
-      final state = context
-          .read<SignUpBloc>()
-          .state;
+      final state = context.read<SignUpBloc>().state;
       String username = state.username;
       String email = state.email;
       String password = state.password;
@@ -44,7 +41,7 @@ class SignUpController {
                 "A verification email has been sent to your email address.",
                 duration: 5);
             await saveUserRegistrationData(
-                email, username, credential.user!.uid)
+                    email, username, credential.user!.uid)
                 .then((value) => value ? Get.offNamed(Routes.LOGIN) : ());
             // await Get.offNamed(Routes.LOGIN);
           }
@@ -59,8 +56,8 @@ class SignUpController {
     }
   }
 
-  Future<bool> saveUserRegistrationData(String email, String username,
-      String firebaseUid) async {
+  Future<bool> saveUserRegistrationData(
+      String email, String username, String firebaseUid) async {
     LoadingAnimationWidget.inkDrop(color: AppColors.mainBlue, size: 50.swp);
     var map = {
       'email': email,

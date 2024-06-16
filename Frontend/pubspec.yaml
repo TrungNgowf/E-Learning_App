@@ -75,6 +75,10 @@ dependencies:
   zego_uikit_prebuilt_live_streaming: ^3.8.4
   zego_uikit_signaling_plugin: ^2.7.13
   bordered_text: ^2.0.0
+  flutter_rating_bar: ^4.0.1
+  like_button: ^2.0.5
+  quickalert: ^1.1.0
+  zego_zimkit: ^1.18.7
 
 dev_dependencies:
   flutter_test:

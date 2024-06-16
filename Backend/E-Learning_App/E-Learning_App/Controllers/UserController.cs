@@ -55,4 +55,16 @@ public class UserController : ControllerBase
         user.Instructor = null;
         await _context.SaveChangesAsync();
     }
+    
+    [HttpGet, Authorize(Roles = RoleNames.Student)]
+    public async Task<decimal> GetAccountBalance()
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var user = await _context.User.FirstOrDefaultAsync(x => x.Id == crtUser.Id);
+        if (user is null)
+        {
+            throw new Exception("User not found");
+        }
+        return user.AccountBalance;
+    }
 }

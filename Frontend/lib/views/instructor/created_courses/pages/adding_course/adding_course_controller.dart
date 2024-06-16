@@ -161,7 +161,7 @@ class AddingCourseController {
     var course = {
       'title': formData['title'],
       'description': formData['description'],
-      'price': dollarFormat.parse(formData['price']),
+      'coursePrice': dollarFormat.parse(formData['price']),
       'categoriesId': tags,
       'thumbnail': thumbnailUrl,
       'whatYouWillLearn': whatYouWillLearn,
@@ -174,6 +174,7 @@ class AddingCourseController {
       Get.back();
       if (value) {
         CustomToast.success('Success', 'Course uploaded successfully');
+        Get.back();
       }
     }).catchError((e) {
       Get.back();

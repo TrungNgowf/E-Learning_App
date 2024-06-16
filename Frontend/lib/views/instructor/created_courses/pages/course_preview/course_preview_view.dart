@@ -196,12 +196,15 @@ class _CoursePreviewState extends State<CoursePreview> {
                                               size: 16, fw: FontWeight.w500)),
                                       title: Row(
                                         children: [
-                                          ReusableText(
-                                              state.course.lessons[index].title,
-                                              textAlign: TextAlign.left,
-                                              style: appStyle(
-                                                  size: 15,
-                                                  fw: FontWeight.w400)),
+                                          Expanded(
+                                            child: ReusableText(
+                                                state.course.lessons[index]
+                                                    .title,
+                                                textAlign: TextAlign.left,
+                                                style: appStyle(
+                                                    size: 15,
+                                                    fw: FontWeight.w400)),
+                                          ),
                                         ],
                                       ),
                                       subtitle: Column(

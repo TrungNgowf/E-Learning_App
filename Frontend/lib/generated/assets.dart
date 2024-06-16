@@ -6,6 +6,7 @@ class Assets {
   static const String iconsError = 'assets/icons/error.png';
   static const String iconsFacebook = 'assets/icons/facebook.png';
   static const String iconsGoogle = 'assets/icons/google.png';
+  static const String iconsOnlineCourse = 'assets/icons/online-course.png';
   static const String imagesCoursePlaceHolder =
       'assets/images/course_place_holder.jpg';
   static const String imagesInstructorRegister =

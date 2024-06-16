@@ -1,5 +1,4 @@
 import 'package:e_learning_app/common/custom_button.dart';
-import 'package:e_learning_app/generated/assets.dart';
 import 'package:e_learning_app/utils/export.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -37,7 +36,9 @@ class ProfilePage extends StatelessWidget {
             Gap(3.shp),
             CircleAvatar(
               radius: 50,
-              backgroundImage: const AssetImage(Assets.imagesPEPE),
+              backgroundImage: Image.network(
+                'https://res.cloudinary.com/sofiathefck/image/upload/v1711822395/e_learning/common/male_default_avatar.jpg',
+              ).image,
               child: Container(
                 alignment: Alignment.bottomRight,
                 child: Container(

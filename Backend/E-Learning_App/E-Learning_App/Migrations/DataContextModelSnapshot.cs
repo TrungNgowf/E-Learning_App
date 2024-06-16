@@ -62,9 +62,6 @@ namespace E_Learning_App.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FollowersCount")
-                        .HasColumnType("int");
-
                     b.Property<string>("Includes")
                         .HasColumnType("nvarchar(max)");
 

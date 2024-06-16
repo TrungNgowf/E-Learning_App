@@ -14,12 +14,11 @@ public class Course : Entity
     [Precision(18, 2)] public decimal CoursePrice { get; set; }
     public string Thumbnail { get; set; } =
         "https://res.cloudinary.com/sofiathefck/image/upload/v1714160388/e_learning/common/course_place_holder.jpg";
-    public int FollowersCount { get; set; } = 0;
     public float? CourseScore { get; set; }
-    public string? Requirements { get; set; }
+    public string? Requirements { get; set; } 
     public string? WhatYouWillLearn { get; set; }
     public string? Includes { get; set; }
     public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
-    public ICollection<User>? LikedByUsers { get; set; } 
-    public ICollection<User>? PurchasedByUsers { get; set; }
+    public virtual ICollection<User> LikedByUsers { get; set; } = new List<User>(); 
+    public virtual ICollection<User> PurchasedByUsers { get; set; } = new List<User>(); 
 }

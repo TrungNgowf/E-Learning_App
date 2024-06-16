@@ -1,4 +1,6 @@
 import 'package:e_learning_app/models/course/course_category.dart';
+import 'package:e_learning_app/models/course/course_detail.dart';
+import 'package:e_learning_app/models/course/course_library.dart';
 import 'package:e_learning_app/models/course/course_list_for_instructor.dart';
 import 'package:e_learning_app/models/course/course_preview_for_instructor.dart';
 import 'package:e_learning_app/services/course/course_service.dart';
@@ -51,6 +53,84 @@ class CourseRepository {
       if (response.statusCode == 200) {
         return CoursePreviewForInstructor.fromJson(
             response.data as Map<String, dynamic>);
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<CourseDetailDto> getCourseDetail(int courseId) async {
+    try {
+      var response = await CourseService.getCourseDetail(courseId);
+      if (response.statusCode == 200) {
+        return CourseDetailDto.fromJson(response.data as Map<String, dynamic>);
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future likeCourse(int courseId) async {
+    try {
+      var response = await CourseService.likeCourse(courseId);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future unlikeCourse(int courseId) async {
+    try {
+      var response = await CourseService.unLikeCourse(courseId);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future enrollCourse(int courseId) async {
+    try {
+      var response = await CourseService.enrollCourse(courseId);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<CourseLibraryDto>> getListEnrolledCourses() async {
+    try {
+      var response = await CourseService.getListEnrolledCourses();
+      if (response.statusCode == 200) {
+        return courseLibraryDtoFromJson(response.data as List);
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<CourseLibraryDto>> getListFavoriteCourses() async {
+    try {
+      var response = await CourseService.getListFavoriteCourses();
+      if (response.statusCode == 200) {
+        return courseLibraryDtoFromJson(response.data as List);
       } else {
         throw Exception(response.statusMessage);
       }

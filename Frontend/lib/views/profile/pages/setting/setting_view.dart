@@ -3,6 +3,7 @@ import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/views/navigation/bloc/navigation_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -35,10 +36,19 @@ class _SettingPageState extends State<SettingPage> {
             Gap(3.shp),
             CustomButton(
               onTap: () {
-                // showDialog(
-                //     context: context,
-                //     builder: (context) => logOutDialog(context));
-                logout(context);
+                QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.warning,
+                  text: "Are you sure you want to log out?",
+                  confirmBtnColor: AppColors.mainRed,
+                  onConfirmBtnTap: () {
+                    logout(context);
+                  },
+                  showCancelBtn: true,
+                  onCancelBtnTap: () {
+                    Get.back();
+                  },
+                );
               },
               backGroundColor: AppColors.mainRed,
               textColor: Colors.white,

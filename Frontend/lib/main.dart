@@ -6,6 +6,7 @@ import 'package:e_learning_app/utils/export.dart';
 import 'package:e_learning_app/utils/storage_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'utils/route_config/page_config.dart';
 
@@ -13,6 +14,10 @@ Future<void> main() async {
   await Global.init();
   HttpOverrides.global = MyHttpOverrides();
   Bloc.observer = AppObservers();
+  ZIMKit().init(
+    appID: 1697744537,
+    appSign: 'a2a63ec992a16596183efee0836eb3871a3f9dbf048634bb18ffb9ea0777ef5b',
+  );
   runApp(const MyApp());
 }
 

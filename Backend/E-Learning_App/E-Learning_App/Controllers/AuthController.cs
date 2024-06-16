@@ -54,8 +54,8 @@ namespace E_Learning_App.Controllers
                     {
                         roles.Add((await _context.Role.FirstOrDefaultAsync(r => r.Id == roleId)!)!);
                     }
-
                     user.Roles = roles;
+                    user.AccountBalance = 30; 
                     _context.User.Add(user);
                     await _context.SaveChangesAsync();
                     return true;

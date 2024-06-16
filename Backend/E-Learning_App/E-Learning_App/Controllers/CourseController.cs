@@ -113,8 +113,180 @@ public class CourseController(DataContext context, IUserService userService) : C
                 Duration = l.Duration
             }).ToList(),
             TotalDuration = course.Lessons.Sum(l => l.Duration),
-            CreationTime = course.CreationTime 
+            CreationTime = course.CreationTime
         };
         return coursePreview;
+    }
+
+    [HttpGet, Authorize(Roles = RoleNames.Student)]
+    public async Task<List<CourseCardDto>> GetCoursesPreviewForHomePage(int type)
+    {
+        var courses = type switch
+        {
+            0 => context.Course.Include(c => c.Instructor)
+                .ThenInclude(i => i.User)
+                .Include(c => c.Categories)
+                .OrderByDescending(c => c.CourseScore)
+                .Take(8),
+            1 => context.Course.Include(c => c.Instructor)
+                .ThenInclude(i => i.User)
+                .Include(c => c.Categories)
+                .Include(c => c.LikedByUsers)
+                .OrderByDescending(c => c.LikedByUsers.Count)
+                .Take(8),
+            2 => context.Course.Include(c => c.Instructor)
+                .ThenInclude(i => i.User)
+                .Include(c => c.Categories)
+                .OrderByDescending(c => c.CreationTime)
+                .Take(8),
+            _ => context.Course.Include(c => c.Instructor)
+                .ThenInclude(i => i.User)
+                .Include(c => c.Categories)
+                .OrderByDescending(c => c.CreationTime)
+                .Take(8),
+        };
+        var courseDto = await courses.Select(c => new CourseCardDto
+        {
+            Id = c.Id,
+            Title = c.Title,
+            Thumbnail = c.Thumbnail,
+            CoursePrice = c.CoursePrice,
+            Categories = c.Categories.Select(cat => cat.Title).ToList(),
+            CourseScore = c.CourseScore,
+            Author = c.Instructor.User.Username
+        }).ToListAsync();
+        return courseDto;
+    }
+
+    [HttpGet, Authorize(Roles = RoleNames.Student)]
+    public async Task<CourseDetail> GetCourseDetail(long courseId)
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var course = await context.Course.Include(a => a.Instructor).ThenInclude(u => u.User)
+            .Include(c => c.Lessons).Include(course => course.Categories)
+            .Include(course => course.Instructor).ThenInclude(instructor => instructor.Courses)
+            .Include(course => course.PurchasedByUsers).Include(course => course.LikedByUsers)
+            .FirstOrDefaultAsync(c => c.Id == courseId);
+        if (course == null) return null!;
+        var courseDetail = new CourseDetail
+        {
+            Id = course.Id,
+            Title = course!.Title,
+            Description = course.Description,
+            Author = new AuthorDto
+            {
+                Id = course.Instructor.Id,
+                Name = course.Instructor.User.Username,
+                ProfilePicture = course.Instructor.User.Avatar,
+                ContactInfo = course.Instructor.ContactInfo,
+                TotalCourses = course.Instructor.Courses.Count
+            },
+            Categories = course.Categories.Select(c => c.Title).ToList(),
+            CoursePrice = course.CoursePrice,
+            Thumbnail = course.Thumbnail,
+            Requirements = course.Requirements!,
+            WhatYouWillLearn = course.WhatYouWillLearn!,
+            Includes = course.Includes!,
+            Lessons = course.Lessons.Select(l => new LessonDto
+            {
+                Title = l.Title,
+                Description = l.Description,
+                VideoUrl = l.VideoUrl,
+                Duration = l.Duration
+            }).ToList(),
+            TotalDuration = course.Lessons.Sum(l => l.Duration),
+            CreationTime = course.CreationTime,
+            IsPurchased = course.PurchasedByUsers.Any(u => u.Id == crtUser.Id),
+            IsLiked = course.LikedByUsers.Any(u => u.Id == crtUser.Id)
+        };
+        return courseDetail;
+    }
+
+    [HttpPost, Authorize(Roles = RoleNames.Student)]
+    public async Task<IActionResult> LikeCourse(long courseId)
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var course = await context.Course.Include(c => c.LikedByUsers).FirstOrDefaultAsync(c => c.Id == courseId);
+        if (course == null) return NotFound();
+        if (course.LikedByUsers.Any(u => u.Id == crtUser.Id)) return BadRequest("You have already liked this course");
+        var user = await context.User.FirstOrDefaultAsync(u => u.Id == crtUser.Id);
+        if (user != null) course.LikedByUsers.Add(user);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
+    [HttpPost, Authorize(Roles = RoleNames.Student)]
+    public async Task<IActionResult> UnLikeCourse(long courseId)
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var course = await context.Course.Include(c => c.LikedByUsers).FirstOrDefaultAsync(c => c.Id == courseId);
+        if (course == null) return NotFound();
+        var user = await context.User.FirstOrDefaultAsync(u => u.Id == crtUser.Id);
+        if (user != null) course.LikedByUsers.Remove(user);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
+
+    [HttpPost, Authorize(Roles = RoleNames.Student)]
+    public async Task<IActionResult> PurchaseCourse(long courseId)
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var user = await context.User.FirstOrDefaultAsync(u => u.Id == crtUser.Id);
+        var course = await context.Course.Include(c => c.PurchasedByUsers).FirstOrDefaultAsync(c => c.Id == courseId);
+        if (course == null) return NotFound();
+        if (course.PurchasedByUsers.Any(u => u.Id == crtUser.Id))
+            return BadRequest("You have already purchased this course");
+        if (user!.AccountBalance < course.CoursePrice)
+            return BadRequest("You don't have enough money to purchase this course");
+        user.AccountBalance -= course.CoursePrice;
+        course.PurchasedByUsers.Add(user!);
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
+    [HttpGet, Authorize(Roles = RoleNames.Student)]
+    public async Task<List<EnrolledCourseCard>> GetEnrolledCourses()
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var user = await context.User.Include(u => u.PurchasedCourses).ThenInclude(ec => ec.Categories)
+            .Include(user => user.PurchasedCourses).ThenInclude(course => course.Instructor)
+            .ThenInclude(ins => ins.User)
+            .FirstOrDefaultAsync(u => u.Id == crtUser.Id);
+        if (user == null) return null!;
+        var enrolledCourses = user.PurchasedCourses.OrderByDescending(o => o.CreationTime)
+            .Select(ec => new EnrolledCourseCard
+            {
+                Id = ec.Id,
+                Title = ec.Title,
+                Thumbnail = ec.Thumbnail,
+                CoursePrice = ec.CoursePrice,
+                Categories = ec.Categories.Select(c => c.Title).ToList(),
+                Author = ec.Instructor.User.Username,
+                CreationTime = ec.CreationTime
+            }).ToList();
+        return enrolledCourses;
+    }
+
+    [HttpGet, Authorize(Roles = RoleNames.Student)]
+    public async Task<List<EnrolledCourseCard>> GetLikedCourses()
+    {
+        var crtUser = _userService.GetCurrentUser();
+        var user = await context.User.Include(u => u.LikedCourses).ThenInclude(ec => ec.Categories)
+            .Include(user => user.LikedCourses).ThenInclude(course => course.Instructor).ThenInclude(ins => ins.User)
+            .FirstOrDefaultAsync(u => u.Id == crtUser.Id);
+        if (user == null) return null!;
+        var likedCourses = user.LikedCourses.OrderByDescending(o => o.CreationTime)
+            .Select(ec => new EnrolledCourseCard
+            {
+                Id = ec.Id,
+                Title = ec.Title,
+                Thumbnail = ec.Thumbnail,
+                CoursePrice = ec.CoursePrice,
+                Categories = ec.Categories.Select(c => c.Title).ToList(),
+                Author = ec.Instructor.User.Username,
+                CreationTime = ec.CreationTime
+            }).ToList();
+        return likedCourses;
     }
 }

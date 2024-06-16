@@ -14,7 +14,7 @@ class LogInController {
 
   LogInController(this.context);
 
-  AuthRepository _authRepository = AuthRepository();
+  final AuthRepository _authRepository = AuthRepository();
 
   Future<void> logIn() async {
     showDialog(

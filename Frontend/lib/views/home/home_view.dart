@@ -2,9 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:e_learning_app/common/custom_button.dart';
 import 'package:e_learning_app/common/custom_textfield.dart';
+import 'package:e_learning_app/constants/enum.dart';
 import 'package:e_learning_app/generated/assets.dart';
 import 'package:e_learning_app/utils/export.dart';
+import 'package:e_learning_app/views/course/course_detail/course_detail_view.dart';
+import 'package:e_learning_app/views/home/bloc/home_bloc.dart';
 import 'package:e_learning_app/views/home/home_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeController _controller = HomeController();
+  final HomeController _controller = HomeController();
   List<String> coursesRecommendation = [
     Assets.imagesRcmCourse1,
     Assets.imagesRcmCourse2,
@@ -23,6 +28,12 @@ class _HomePageState extends State<HomePage> {
   ];
   int rcmCourseIndex = 0;
   int chosenIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().add(FetchHomeData());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,74 +184,220 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 Gap(1.shp),
-                btnCourseRow(chosenIndex),
-                Gap(1.shp),
-                SizedBox(
-                  height: 40.shp,
-                  child: GridView.builder(
-                    itemCount: 4,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 2.swp,
-                        mainAxisSpacing: 2.swp,
-                        crossAxisCount: 2,
-                        childAspectRatio: 1.6),
-                    itemBuilder: (context, index) {
-                      return Container(
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 1,
-                                blurRadius: 3,
-                                offset: const Offset(0, 1),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    switch (state.apiStatus) {
+                      case ApiStatus.loading:
+                        return Center(
+                            child: Container(
+                                padding: EdgeInsets.only(top: 5.swp),
+                                child: const CircularProgressIndicator()));
+                      case ApiStatus.error:
+                        return const Center(child: Text("Error"));
+                      case ApiStatus.success:
+                        return Column(
+                          children: [
+                            btnCourseRow(state.indexPreview),
+                            Gap(1.shp),
+                            SizedBox(
+                              height: 62.shp,
+                              child: GridView.builder(
+                                itemCount: state.previewList.length,
+                                scrollDirection: Axis.horizontal,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 2.5.swp,
+                                        mainAxisSpacing: 2.5.swp,
+                                        mainAxisExtent: 60.swp,
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 1.6),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => const CourseDetail(),
+                                          arguments:
+                                              state.previewList[index].id);
+                                    },
+                                    child: Card(
+                                      elevation: 3,
+                                      clipBehavior: Clip.antiAlias,
+                                      child: Container(
+                                          height: 31.shp,
+                                          width: 60.swp,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Stack(children: [
+                                            Positioned(
+                                              top: 0,
+                                              child: SizedBox(
+                                                height: 15.shp,
+                                                width: 60.swp,
+                                                child: Image.network(
+                                                  state.previewList[index]
+                                                      .thumbnail,
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                                bottom: 0,
+                                                child: Container(
+                                                  padding:
+                                                      EdgeInsets.all(2.swp),
+                                                  color: Colors.white,
+                                                  width: 60.swp,
+                                                  height: 16.shp,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          ReusableText(
+                                                              state
+                                                                  .previewList[
+                                                                      index]
+                                                                  .title,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              maxLines: 2,
+                                                              style: appStyle(
+                                                                size: 15,
+                                                                color: Colors
+                                                                    .black,
+                                                                fw: FontWeight
+                                                                    .w600,
+                                                              )),
+                                                          ReusableText(
+                                                              state
+                                                                  .previewList[
+                                                                      index]
+                                                                  .author,
+                                                              style: appStyle(
+                                                                size: 9,
+                                                                color: Colors
+                                                                    .black,
+                                                                fw: FontWeight
+                                                                    .w300,
+                                                              )),
+                                                          state
+                                                                      .previewList[
+                                                                          index]
+                                                                      .courseScore ==
+                                                                  null
+                                                              ? ReusableText(
+                                                                  "No rating",
+                                                                  style:
+                                                                      appStyle(
+                                                                    size: 9,
+                                                                    color: Colors
+                                                                        .amber
+                                                                        .shade400,
+                                                                    fw: FontWeight
+                                                                        .w200,
+                                                                  ))
+                                                              : RatingBarIndicator(
+                                                                  rating: state
+                                                                      .previewList[
+                                                                          index]
+                                                                      .courseScore!,
+                                                                  itemBuilder: (context,
+                                                                          index) =>
+                                                                      const Icon(
+                                                                    Icons.star,
+                                                                    color: Colors
+                                                                        .amber,
+                                                                  ),
+                                                                  itemCount: 5,
+                                                                  itemSize: 12,
+                                                                  direction: Axis
+                                                                      .horizontal,
+                                                                ),
+                                                          Gap(0.7.swp),
+                                                          Row(
+                                                            children: [
+                                                              state
+                                                                  .previewList[
+                                                                      index]
+                                                                  .categories
+                                                                  .map((e) =>
+                                                                      Container(
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            horizontal:
+                                                                                1.swp,
+                                                                            vertical: 0.5.swp),
+                                                                        // margin: EdgeInsets.symmetric(
+                                                                        //     horizontal:
+                                                                        //         1.swp),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5),
+                                                                          border: Border.all(
+                                                                              color: AppColors.mainBlue,
+                                                                              width: 1),
+                                                                        ),
+                                                                        child: Text(
+                                                                            e,
+                                                                            style: appStyle(
+                                                                                size: 10,
+                                                                                color: AppColors.mainBlue,
+                                                                                fw: FontWeight.w200)),
+                                                                      ))
+                                                                  .toList()[0],
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          ReusableText(
+                                                              state.previewList[index]
+                                                                          .coursePrice ==
+                                                                      0
+                                                                  ? "Free"
+                                                                  : "\$${state.previewList[index].coursePrice}",
+                                                              style: appStyle(
+                                                                size: 15,
+                                                                color: Colors
+                                                                    .blueAccent,
+                                                                fw: FontWeight
+                                                                    .w600,
+                                                              )),
+                                                          Gap(3.swp),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ))
+                                          ])),
+                                    ),
+                                  );
+                                },
                               ),
-                            ],
-                          ),
-                          child: Stack(children: [
-                            Positioned(
-                              top: 0,
-                              child: Container(
-                                height: 10.shp,
-                                width: 46.swp,
-                                child: Image.asset(
-                                  Assets.imagesCoursePlaceHolder,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  padding: EdgeInsets.all(1.swp),
-                                  color: Colors.white,
-                                  width: 46.swp,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ReusableText("Course Name",
-                                          style: appStyle(
-                                            size: 10,
-                                            color: Colors.black,
-                                            fw: FontWeight.w600,
-                                          )),
-                                      ReusableText("Course Description",
-                                          style: appStyle(
-                                            size: 9,
-                                            color: Colors.black,
-                                            fw: FontWeight.w300,
-                                          )),
-                                    ],
-                                  ),
-                                ))
-                          ]));
-                    },
-                  ),
-                )
+                            )
+                          ],
+                        );
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -258,18 +415,22 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.symmetric(horizontal: 2.swp, vertical: 2.swp),
           fontSize: 12,
           backGroundColor:
-              chosenIndex == 0 ? AppColors.mainBlue : Colors.blueGrey,
+              chosenIndex == 0 ? AppColors.mainBlue : Colors.blueGrey[200],
           textColor: Colors.white,
-          onTap: () {},
+          onTap: () {
+            context.read<HomeBloc>().add(ChangePreviewIndex(0));
+          },
         ),
         CustomButton(
           text: "Popular",
           padding: EdgeInsets.symmetric(horizontal: 3.swp, vertical: 2.swp),
           fontSize: 12,
           backGroundColor:
-              chosenIndex == 2 ? AppColors.mainBlue : Colors.blueGrey[200],
+              chosenIndex == 1 ? AppColors.mainBlue : Colors.blueGrey[200],
           textColor: Colors.white,
-          onTap: () {},
+          onTap: () {
+            context.read<HomeBloc>().add(ChangePreviewIndex(1));
+          },
         ),
         CustomButton(
           text: "Newest",
@@ -278,7 +439,9 @@ class _HomePageState extends State<HomePage> {
           backGroundColor:
               chosenIndex == 2 ? AppColors.mainBlue : Colors.blueGrey[200],
           textColor: Colors.white,
-          onTap: () {},
+          onTap: () {
+            context.read<HomeBloc>().add(ChangePreviewIndex(2));
+          },
         ),
       ],
     );
